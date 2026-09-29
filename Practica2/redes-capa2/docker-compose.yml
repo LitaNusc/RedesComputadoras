@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------------------
+# Dos contenedores en la misma red bridge = dos "hosts" unidos por un switch
+# virtual (capa 2). El emisor manda broadcast y el receptor lo captura.
+#
+#   docker compose up --build        (o: docker-compose up --build)
+#   docker compose down
+# ---------------------------------------------------------------------------
+services:
+  receptor:                       # Lado izquierdo
+    build: .
+    container_name: r2_receptor
+    # NET_RAW: necesario para abrir sockets de capa 2 (AF_PACKET) con libpcap.
+    # NET_ADMIN: necesario para el modo promiscuo en la interfaz.
+    cap_add: [NET_RAW, NET_ADMIN]
+    command: ["receptor", "-i", "eth0", "-v"]
+    networks: [capa2]
+
+  emisor:                         # Lado derecho
+    build: .
+    container_name: r2_emisor
+    depends_on: [receptor]
+    cap_add: [NET_RAW]
+    # La pausa inicial da tiempo a que el receptor abra la interfaz.
+    command: ["sh", "-c", "sleep 3 && emisor -i eth0 -m 'Hola Redes2027-1' -p 0.01 -n 20 -t 500 -s 7 -v"]
+    networks: [capa2]
+
+networks:
+  capa2:
+    driver: bridge

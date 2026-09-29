@@ -1,0 +1,16 @@
+# Binarios y objetos
+build/
+*.o
+
+# Auxiliares de LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# Editores
+.vscode/
+*.swp

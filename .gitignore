@@ -1,0 +1,18 @@
+# Archivos generados
+*.o
+*.a
+
+# Directorios de compilación
+build/
+cmake-build-*/
+
+# Archivos temporales
+*.tmp
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos ZIP de prácticas
+*.zip
